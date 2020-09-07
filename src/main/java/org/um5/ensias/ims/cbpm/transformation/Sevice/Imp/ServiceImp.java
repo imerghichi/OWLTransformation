@@ -1,7 +1,6 @@
 package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.semanticweb.owlapi.model.*;
 import org.um5.ensias.ims.cbpm.transformation.Sevice.Service;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@org.springframework.stereotype.Service
 public class ServiceImp implements Service {
     private List<CbpmElement> done = new ArrayList<>();
     private Utils utils = new Utils();
