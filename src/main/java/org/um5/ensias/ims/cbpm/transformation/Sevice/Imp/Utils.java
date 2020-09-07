@@ -3,24 +3,31 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 
+import java.util.Arrays;
+
 public class Utils {
     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
     OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
 
-    public OWLOntology createOntology(IRI iri) throws OWLOntologyCreationException {
-        return manager.createOntology(iri);
+
+    public IRI convertStringToIRI(String iri){
+        return IRI.create(iri);
     }
 
-    public OWLClass createClass(IRI iri){
-        return dataFactory.getOWLClass(iri);
+    public OWLOntology createOntology(String iri) throws OWLOntologyCreationException {
+        return manager.createOntology(convertStringToIRI(iri));
     }
 
-    public OWLIndividual createIndividual(IRI iri){
-        return dataFactory.getOWLNamedIndividual(iri);
+    public OWLClass createClass(String iri){
+        return dataFactory.getOWLClass(convertStringToIRI(iri));
     }
 
-    public OWLObjectProperty createObjectProperty(IRI iri){
-        return dataFactory.getOWLObjectProperty(iri);
+    public OWLIndividual createIndividual(String iri){
+        return dataFactory.getOWLNamedIndividual(convertStringToIRI(iri));
+    }
+
+    public OWLObjectProperty createObjectProperty(String iri){
+        return dataFactory.getOWLObjectProperty(convertStringToIRI(iri));
     }
 
     public OWLAxiomChange addSubClass(OWLOntology ontology,OWLClass subclass, OWLClass superclass){
@@ -31,4 +38,11 @@ public class Utils {
         return new AddAxiom(ontology, dataFactory.getOWLClassAssertionAxiom(classe, individual));
     }
 
+    public void addChange (OWLAxiomChange... axiomChanges){
+        manager.applyChanges(Arrays.asList(axiomChanges));
+    }
+
+    public void addChanges(OWLAxiomChange... axiom){
+        addChange(axiom);
+    }
 }
