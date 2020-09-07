@@ -33,3 +33,7 @@ buildNumber.properties
 .mvn/timing.properties
 # 
 .mvn/wrapper/maven-wrapper.jar
+#intellij et Cie
+.idea/*
+.settings/*
+.mvn/*
