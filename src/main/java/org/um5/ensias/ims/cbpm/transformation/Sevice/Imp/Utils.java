@@ -1,10 +1,13 @@
 package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 
 import java.util.Arrays;
-
+@Getter
+@Setter
 public class Utils {
     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
     OWLDataFactory dataFactory = OWLManager.getOWLDataFactory();
@@ -36,6 +39,15 @@ public class Utils {
 
     public OWLAxiomChange addIndividualToClass(OWLOntology ontology, OWLClass classe, OWLIndividual individual){
         return new AddAxiom(ontology, dataFactory.getOWLClassAssertionAxiom(classe, individual));
+    }
+    public OWLAxiomChange addObjectPropertytoClass(OWLOntology ontology, OWLObjectProperty objectProperty, OWLClass source, OWLClass target){
+        OWLClassExpression expression = dataFactory.getOWLObjectSomeValuesFrom(objectProperty, target);
+        OWLSubClassOfAxiom axiom = dataFactory.getOWLSubClassOfAxiom(source, expression);
+        return new AddAxiom(ontology, axiom);
+    }
+    public OWLAxiomChange addObjectproperty(OWLOntology ontology, OWLIndividual target, OWLObjectProperty property, OWLIndividual source) {
+        OWLObjectPropertyAssertionAxiom prop= dataFactory.getOWLObjectPropertyAssertionAxiom(property, target, source);
+        return new AddAxiom(ontology, prop);
     }
 
     public void addChange (OWLAxiomChange... axiomChanges){
