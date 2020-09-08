@@ -2,8 +2,10 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLOntologyDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class Utils {
@@ -62,4 +64,9 @@ public class Utils {
     public static void addChanges(OWLAxiomChange... axiom){
         addChange(axiom);
     }
+
+    public static void save(OWLOntology ontology, OWLOntologyDocumentTarget documentTarget) throws OWLOntologyStorageException {
+        manager.saveOntology(ontology,documentTarget);
+    }
+    
 }

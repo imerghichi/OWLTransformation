@@ -17,4 +17,7 @@ class UtilsTest {
 
     }
 
+    @Test
+    void save() throws OWLOntologyCreationException {
+    }
 }
