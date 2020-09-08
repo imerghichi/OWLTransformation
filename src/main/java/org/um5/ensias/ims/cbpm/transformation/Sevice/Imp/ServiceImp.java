@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 public class ServiceImp implements Service {
     private List<CbpmElement> done = new ArrayList<>();
-    private Utils utils = new Utils();
     private String baseIRI;
     @Override
     public OWLOntology convertCBPMtoOWLOntology(Cbpm cbpm) throws Exception {
@@ -25,7 +24,7 @@ public class ServiceImp implements Service {
 
     public void addAllIndividualsfromRoot(CbpmElement root, OWLOntology ontology) throws Exception {
         addElementAsIndividual(root, ontology);
-        OWLObjectProperty propFollow = utils.createObjectProperty(baseIRI+"#follows");
+        OWLObjectProperty propFollow = Utils.createObjectProperty(baseIRI+"#follows");
         done.add(root);
         if(root.getFolow()!=null){
             for (CbpmElement element:
@@ -49,16 +48,16 @@ public class ServiceImp implements Service {
         if (cbpmElement == null) throw new Exception("CBPM Element must be not null");
         switch (cbpmElement.getClass().getSimpleName()){
             case "Event":
-                OWLIndividual individualAsEvent = utils.createIndividual(cbpmElement.getNameElement());
-                utils.addIndividualToClass(ontology,utils.getDataFactory().getOWLClass(baseIRI+"#event"),individualAsEvent);
+                OWLIndividual individualAsEvent = Utils.createIndividual(cbpmElement.getNameElement());
+                Utils.addIndividualToClass(ontology,Utils.getDataFactory().getOWLClass(baseIRI+"#event"),individualAsEvent);
                 return individualAsEvent;
             case "Gateway":
-                OWLIndividual individualAsGateway = utils.createIndividual(cbpmElement.getNameElement());
-                utils.addIndividualToClass(ontology,utils.getDataFactory().getOWLClass(baseIRI+"#gateway"),individualAsGateway);
+                OWLIndividual individualAsGateway = Utils.createIndividual(cbpmElement.getNameElement());
+                Utils.addIndividualToClass(ontology,Utils.getDataFactory().getOWLClass(baseIRI+"#gateway"),individualAsGateway);
                 return individualAsGateway;
             case "Service":
-                OWLIndividual individualAsService = utils.createIndividual(cbpmElement.getNameElement());
-                utils.addIndividualToClass(ontology,utils.getDataFactory().getOWLClass(baseIRI+"#service"),individualAsService);
+                OWLIndividual individualAsService = Utils.createIndividual(cbpmElement.getNameElement());
+                Utils.addIndividualToClass(ontology,Utils.getDataFactory().getOWLClass(baseIRI+"#service"),individualAsService);
                 return individualAsService;
             default:
                 throw new Exception("Class Not Found");
@@ -73,17 +72,17 @@ public class ServiceImp implements Service {
     }
 
     public OWLOntology createBasicOntology() throws OWLOntologyCreationException {
-       OWLOntology ontology = utils.createOntology(baseIRI);
-       OWLClass processElement = utils.createClass(baseIRI+"#processElement");
-       OWLClass event = utils.createClass(baseIRI+"#event");
-       OWLClass gateway = utils.createClass(baseIRI+"#gateway");
-       OWLClass service = utils.createClass(baseIRI+"#service");
-       OWLAxiomChange axiomChange1 = utils.addSubClass(ontology,event,processElement);
-       OWLAxiomChange axiomChange2 = utils.addSubClass(ontology,gateway,processElement);
-       OWLAxiomChange axiomChange3 = utils.addSubClass(ontology,service,processElement);
-        utils.addChange(axiomChange1);
-        utils.addChange(axiomChange2);
-        utils.addChange(axiomChange3);
+       OWLOntology ontology = Utils.createOntology(baseIRI);
+       OWLClass processElement = Utils.createClass(baseIRI+"#processElement");
+       OWLClass event = Utils.createClass(baseIRI+"#event");
+       OWLClass gateway = Utils.createClass(baseIRI+"#gateway");
+       OWLClass service = Utils.createClass(baseIRI+"#service");
+       OWLAxiomChange axiomChange1 = Utils.addSubClass(ontology,event,processElement);
+       OWLAxiomChange axiomChange2 = Utils.addSubClass(ontology,gateway,processElement);
+       OWLAxiomChange axiomChange3 = Utils.addSubClass(ontology,service,processElement);
+        Utils.addChange(axiomChange1);
+        Utils.addChange(axiomChange2);
+        Utils.addChange(axiomChange3);
        return ontology;
     }
 
