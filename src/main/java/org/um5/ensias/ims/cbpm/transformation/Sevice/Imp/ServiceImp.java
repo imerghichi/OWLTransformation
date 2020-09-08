@@ -18,57 +18,50 @@ public class ServiceImp implements Service {
     @Override
     public OWLOntology convertCBPMtoOWLOntology(Cbpm cbpm) throws Exception {
         OWLOntology ontology = createBasicOntology();
-        addElementAsIndividual(cbpm.getStartEvent(),ontology);
+        addAllIndividualsfromRoot(cbpm.getStartEvent(),ontology);
         return ontology;
-    }
-
-    public void addAllIndividualsfromRoot(CbpmElement root, OWLOntology ontology) throws Exception {
-        addElementAsIndividual(root, ontology);
-        OWLObjectProperty propFollow = Utils.createObjectProperty(baseIRI+"#follows");
-        done.add(root);
-        if(root.getFolow()!=null){
-            for (CbpmElement element:
-                    root.getFolow()) {
-                if(!done.contains(element)){
-                    addAllIndividualsfromRoot(element, ontology);
-                    done.add(element);
-                    //todo completer le raisonnement
-                }
-                else{
-
-                }
-
-            }
-        }
-
-    }
-
-
-    public OWLIndividual addElementAsIndividual(CbpmElement cbpmElement, OWLOntology ontology) throws Exception {
-        if (cbpmElement == null) throw new Exception("CBPM Element must be not null");
-        switch (cbpmElement.getClass().getSimpleName()){
-            case "Event":
-                OWLIndividual individualAsEvent = Utils.createIndividual(cbpmElement.getNameElement());
-                Utils.addIndividualToClass(ontology,Utils.getDataFactory().getOWLClass(baseIRI+"#event"),individualAsEvent);
-                return individualAsEvent;
-            case "Gateway":
-                OWLIndividual individualAsGateway = Utils.createIndividual(cbpmElement.getNameElement());
-                Utils.addIndividualToClass(ontology,Utils.getDataFactory().getOWLClass(baseIRI+"#gateway"),individualAsGateway);
-                return individualAsGateway;
-            case "Service":
-                OWLIndividual individualAsService = Utils.createIndividual(cbpmElement.getNameElement());
-                Utils.addIndividualToClass(ontology,Utils.getDataFactory().getOWLClass(baseIRI+"#service"),individualAsService);
-                return individualAsService;
-            default:
-                throw new Exception("Class Not Found");
-        }
     }
 
     public ServiceImp(String baseIRI) {
         this.baseIRI = baseIRI;
     }
 
-    public ServiceImp() {
+    public void addAllIndividualsfromRoot(CbpmElement root, OWLOntology ontology) throws Exception {
+        OWLIndividual rootIndividual =  getElementAsIndividual(root);
+        addElementAsIndividualToClass(ontology,rootIndividual,root);
+        OWLObjectProperty propFollow = Utils.createObjectProperty(baseIRI+"#follows");
+        done.add(root);
+        if(root.getFolow()!=null){
+            for (CbpmElement element:
+                    root.getFolow()) {
+                if(!done.contains(element)){
+                    Utils.addChange(Utils.addObjectproperty(ontology,getElementAsIndividual(element),propFollow,rootIndividual));
+                    addAllIndividualsfromRoot(element,ontology);
+                    done.add(element);
+                }
+                else{
+                    Utils.addChange(Utils.addObjectproperty(ontology,getElementAsIndividual(element),propFollow,rootIndividual));
+                }
+
+            }
+        }
+
+    }
+    public void addElementAsIndividualToClass(OWLOntology ontology, OWLIndividual individual, CbpmElement element){
+        Utils.addIndividualToClass(ontology, Utils.getDataFactory().getOWLClass(baseIRI+"#"+element.getClass().getSimpleName().toLowerCase()),individual);
+    }
+
+
+    public OWLIndividual getElementAsIndividual(CbpmElement cbpmElement) throws Exception {
+        if (cbpmElement == null) throw new Exception("CBPM Element must be not null");
+        switch (cbpmElement.getClass().getSimpleName()){
+            case "Event":
+            case "Gateway":
+            case "Service":
+                return Utils.createIndividual(cbpmElement.getNameElement());
+            default:
+                throw new Exception("Class Not Found");
+        }
     }
 
     public OWLOntology createBasicOntology() throws OWLOntologyCreationException {
