@@ -2,14 +2,12 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.um5.ensias.ims.cbpm.transformation.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class ServiceImpTest {
@@ -56,7 +54,7 @@ class ServiceImpTest {
         followers3.add(event1);
         gateway.setFolow(followers3);
         OWLOntology ontology = serviceImp1.convertCBPMtoOWLOntology(cbpm1);
-        // 3 avec basic ontology + 3 pour follow
+        // 3 avec basic ontologormatiomy + 3 pour follow
         assertEquals(ontology.getAxiomCount(),6);
     }
 }

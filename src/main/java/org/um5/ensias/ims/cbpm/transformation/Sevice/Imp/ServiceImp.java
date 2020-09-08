@@ -12,14 +12,18 @@ import java.util.List;
 
 @Getter
 @Setter
+@org.springframework.stereotype.Service
 public class ServiceImp implements Service {
     private List<CbpmElement> done = new ArrayList<>();
-    private String baseIRI;
+    private String baseIRI = "defaultIRI";
     @Override
     public OWLOntology convertCBPMtoOWLOntology(Cbpm cbpm) throws Exception {
         OWLOntology ontology = createBasicOntology();
         addAllIndividualsfromRoot(cbpm.getStartEvent(),ontology);
         return ontology;
+    }
+
+    public ServiceImp() {
     }
 
     public ServiceImp(String baseIRI) {
