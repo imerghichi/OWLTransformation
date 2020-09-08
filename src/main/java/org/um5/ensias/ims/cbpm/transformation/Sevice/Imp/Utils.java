@@ -2,6 +2,7 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 
@@ -67,6 +68,11 @@ public class Utils {
 
     public static void save(OWLOntology ontology, OWLOntologyDocumentTarget documentTarget) throws OWLOntologyStorageException {
         manager.saveOntology(ontology,documentTarget);
+    }
+
+    //needed for test
+    public static OWLOntology read(OWLOntologyDocumentSource source) throws OWLOntologyCreationException {
+        return manager.loadOntologyFromOntologyDocument(source);
     }
     
 }

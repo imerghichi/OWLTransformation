@@ -1,6 +1,7 @@
 package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 import org.junit.jupiter.api.Test;
+import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.StringDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.um5.ensias.ims.cbpm.transformation.model.*;
@@ -98,6 +99,8 @@ class ServiceImpTest {
         OWLOntology ontology = service.convertCBPMtoOWLOntology(cbpm);
         StringDocumentTarget target = new StringDocumentTarget();
         Utils.save(ontology,target);
+
+        assertEquals(10, ontology.getAxiomCount());
         File file = new File("example.owl");
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(target.toString());
