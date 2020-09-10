@@ -6,7 +6,6 @@ import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentTarget;
 import org.semanticweb.owlapi.model.*;
 
-import java.io.File;
 import java.util.Arrays;
 
 public class Utils {

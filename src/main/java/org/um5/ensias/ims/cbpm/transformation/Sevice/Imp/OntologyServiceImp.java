@@ -3,7 +3,8 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 import lombok.Getter;
 import lombok.Setter;
 import org.semanticweb.owlapi.model.*;
-import org.um5.ensias.ims.cbpm.transformation.Sevice.Service;
+import org.springframework.stereotype.Service;
+import org.um5.ensias.ims.cbpm.transformation.Sevice.OntologyService;
 import org.um5.ensias.ims.cbpm.transformation.model.Cbpm;
 import org.um5.ensias.ims.cbpm.transformation.model.CbpmElement;
 
@@ -12,8 +13,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@org.springframework.stereotype.Service
-public class ServiceImp implements Service {
+@Service
+public class OntologyServiceImp implements OntologyService {
     private List<CbpmElement> done = new ArrayList<>();
     private String baseIRI = "defaultIRI";
     @Override
@@ -23,10 +24,10 @@ public class ServiceImp implements Service {
         return ontology;
     }
 
-    public ServiceImp() {
+    public OntologyServiceImp() {
     }
 
-    public ServiceImp(String baseIRI) {
+    public OntologyServiceImp(String baseIRI) {
         this.baseIRI = baseIRI;
     }
 
