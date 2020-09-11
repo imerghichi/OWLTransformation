@@ -10,11 +10,11 @@ import java.util.List;
 @Setter
 @Entity
 @Table
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Category")
 public abstract class CbpmElement  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
 	private long id;
 	//I add it to get the IRI
 	private String nameElement;
