@@ -1,7 +1,6 @@
 package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 import org.junit.jupiter.api.Test;
-import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.StringDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.um5.ensias.ims.cbpm.transformation.model.*;
@@ -10,18 +9,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class ServiceImpTest {
+class OntologyServiceImpTest {
 
     @Test
     void convertCBPMtoOWLOntology() throws Exception {
-        ServiceImp serviceImp = new ServiceImp("123");
+        OntologyServiceImp serviceImp = new OntologyServiceImp("123");
         Cbpm cbpm = new Cbpm();
         Event event = new Event();
         event.setNameElement("start");
@@ -42,7 +40,7 @@ class ServiceImpTest {
         test avec boucle
          */
 
-        ServiceImp serviceImp1 = new ServiceImp("345");
+        OntologyServiceImp serviceImp1 = new OntologyServiceImp("345");
         Cbpm cbpm1 = new Cbpm();
         Event event1 = new Event();
         event1.setNameElement("start");
@@ -67,7 +65,7 @@ class ServiceImpTest {
 
     @Test
     void create_example_ontology() throws Exception {
-        ServiceImp service = new ServiceImp("ExampleOntology");
+        OntologyServiceImp service = new OntologyServiceImp("ExampleOntology");
         Event startEvent = new Event();
         startEvent.setNameElement("StartEvent");
         Service searchTrip= new Service();
