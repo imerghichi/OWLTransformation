@@ -3,17 +3,19 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 import lombok.Getter;
 import lombok.Setter;
 import org.semanticweb.owlapi.model.*;
-import org.um5.ensias.ims.cbpm.transformation.Sevice.Service;
+import org.springframework.stereotype.Service;
+import org.um5.ensias.ims.cbpm.transformation.Sevice.OntologyService;
 import org.um5.ensias.ims.cbpm.transformation.model.Cbpm;
 import org.um5.ensias.ims.cbpm.transformation.model.CbpmElement;
+import org.um5.ensias.ims.cbpm.transformation.model.CbpmElementCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@org.springframework.stereotype.Service
-public class ServiceImp implements Service {
+@Service
+public class OntologyServiceImp implements OntologyService {
     private List<CbpmElement> done = new ArrayList<>();
     private String baseIRI = "defaultIRI";
     @Override
@@ -23,10 +25,10 @@ public class ServiceImp implements Service {
         return ontology;
     }
 
-    public ServiceImp() {
+    public OntologyServiceImp() {
     }
 
-    public ServiceImp(String baseIRI) {
+    public OntologyServiceImp(String baseIRI) {
         this.baseIRI = baseIRI;
     }
 
@@ -35,9 +37,9 @@ public class ServiceImp implements Service {
         addElementAsIndividualToClass(ontology,rootIndividual,root);
         OWLObjectProperty propFollow = Utils.createObjectProperty(baseIRI+"#follows");
         done.add(root);
-        if(root.getFolow()!=null){
+        if(root.getFollowers()!=null){
             for (CbpmElement element:
-                    root.getFolow()) {
+                    root.getFollowers()) {
                 if(!done.contains(element)){
                     Utils.addChange(Utils.addObjectproperty(ontology,getElementAsIndividual(element),propFollow,rootIndividual));
                     addAllIndividualsfromRoot(element,ontology);
@@ -58,28 +60,19 @@ public class ServiceImp implements Service {
 
     public OWLIndividual getElementAsIndividual(CbpmElement cbpmElement) throws Exception {
         if (cbpmElement == null) throw new Exception("CBPM Element must be not null");
-        switch (cbpmElement.getClass().getSimpleName()){
-            case "Event":
-            case "Gateway":
-            case "Service":
-                return Utils.createIndividual(cbpmElement.getNameElement());
-            default:
-                throw new Exception("Class Not Found");
-        }
+            return Utils.createIndividual(cbpmElement.getNameElement());
+
     }
 
     public OWLOntology createBasicOntology() throws OWLOntologyCreationException {
        OWLOntology ontology = Utils.createOntology(baseIRI);
        OWLClass processElement = Utils.createClass(baseIRI+"#processElement");
-       OWLClass event = Utils.createClass(baseIRI+"#event");
-       OWLClass gateway = Utils.createClass(baseIRI+"#gateway");
-       OWLClass service = Utils.createClass(baseIRI+"#service");
-       OWLAxiomChange axiomChange1 = Utils.addSubClass(ontology,event,processElement);
-       OWLAxiomChange axiomChange2 = Utils.addSubClass(ontology,gateway,processElement);
-       OWLAxiomChange axiomChange3 = Utils.addSubClass(ontology,service,processElement);
-        Utils.addChange(axiomChange1);
-        Utils.addChange(axiomChange2);
-        Utils.addChange(axiomChange3);
+        for (CbpmElementCategory category:
+             CbpmElementCategory.values()) {
+            OWLClass owlClass =Utils.createClass(baseIRI+category.name().toLowerCase());
+            OWLAxiomChange axiomChange =Utils.addSubClass(ontology,owlClass,processElement);
+            Utils.addChange(axiomChange);
+        }
        return ontology;
     }
 

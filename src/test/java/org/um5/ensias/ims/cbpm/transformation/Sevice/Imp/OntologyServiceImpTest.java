@@ -1,7 +1,6 @@
 package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 
 import org.junit.jupiter.api.Test;
-import org.semanticweb.owlapi.io.StringDocumentSource;
 import org.semanticweb.owlapi.io.StringDocumentTarget;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.um5.ensias.ims.cbpm.transformation.model.*;
@@ -10,28 +9,28 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class ServiceImpTest {
+class OntologyServiceImpTest {
 
     @Test
     void convertCBPMtoOWLOntology() throws Exception {
-        ServiceImp serviceImp = new ServiceImp("123");
-        Cbpm cbpm = new Cbpm();
-        Event event = new Event();
+        OntologyServiceImp ontologyServiceImp = new OntologyServiceImp("123");
+        CbpmElement event = new CbpmElement();
         event.setNameElement("start");
+        event.setCategory(CbpmElementCategory.Event);
+        Cbpm cbpm = new Cbpm(event);
         cbpm.setStartEvent(event);
-        Service service =new Service();
+        CbpmElement service =new CbpmElement();
         service.setNameElement("service");
         List<CbpmElement> followers = new ArrayList<>();
         followers.add(service);
-        event.setFolow(followers);
-        OWLOntology ontology1 = serviceImp.convertCBPMtoOWLOntology(cbpm);
+        event.setFollowers(followers);
+        OWLOntology ontology1 = ontologyServiceImp.convertCBPMtoOWLOntology(cbpm);
         // 3 avec basic ontology + 1 pour follow
         assertEquals(ontology1.getAxiomCount(),4);
     }
@@ -42,59 +41,59 @@ class ServiceImpTest {
         test avec boucle
          */
 
-        ServiceImp serviceImp1 = new ServiceImp("345");
-        Cbpm cbpm1 = new Cbpm();
-        Event event1 = new Event();
+        OntologyServiceImp ontologyServiceImp1 = new OntologyServiceImp("345");
+        CbpmElement event1 = new CbpmElement();
         event1.setNameElement("start");
-        cbpm1.setStartEvent(event1);
-        Service service1 =new Service();
+        event1.setCategory(CbpmElementCategory.Event);
+        Cbpm cbpm1 = new Cbpm(event1);
+        CbpmElement service1 =new CbpmElement();
         service1.setNameElement("service");
         List<CbpmElement> followers1 = new ArrayList<>();
         followers1.add(service1);
-        event1.setFolow(followers1);
-        Gateway gateway = new Gateway();
+        event1.setFollowers(followers1);
+        CbpmElement gateway = new CbpmElement();
         gateway.setNameElement("gateway");
         List<CbpmElement> followers2 = new ArrayList<>();
         followers2.add(gateway);
-        service1.setFolow(followers2);
+        service1.setFollowers(followers2);
         List<CbpmElement> followers3 =new ArrayList<>();
         followers3.add(event1);
-        gateway.setFolow(followers3);
-        OWLOntology ontology = serviceImp1.convertCBPMtoOWLOntology(cbpm1);
+        gateway.setFollowers(followers3);
+        OWLOntology ontology = ontologyServiceImp1.convertCBPMtoOWLOntology(cbpm1);
         // 3 avec basic ontologormatiomy + 3 pour follow
         assertEquals(ontology.getAxiomCount(),6);
     }
 
     @Test
     void create_example_ontology() throws Exception {
-        ServiceImp service = new ServiceImp("ExampleOntology");
-        Event startEvent = new Event();
+        OntologyServiceImp service = new OntologyServiceImp("ExampleOntology");
+        CbpmElement startEvent = new CbpmElement();
         startEvent.setNameElement("StartEvent");
-        Service searchTrip= new Service();
+        startEvent.setCategory(CbpmElementCategory.Event);
+        CbpmElement searchTrip= new CbpmElement();
         searchTrip.setNameElement("SearchTrip");
-        Service displayResult= new Service();
+        CbpmElement displayResult= new CbpmElement();
         displayResult.setNameElement("DisplayResult");
-        Gateway orGateway = new Gateway();
+        CbpmElement orGateway = new CbpmElement();
         orGateway.setNameElement("ORGateway");
-        Service chooseTrip = new Service();
+        CbpmElement chooseTrip = new CbpmElement();
         chooseTrip.setNameElement("ChooseTrip");
-        Service displayTrip = new Service();
+        CbpmElement displayTrip = new CbpmElement();
         displayTrip.setNameElement("DisplayTrip");
-        Event endEvent = new Event();
+        CbpmElement endEvent = new CbpmElement();
         endEvent.setNameElement("EndEvent");
 
-        startEvent.setFolow(Collections.singletonList(searchTrip));
-        searchTrip.setFolow(Collections.singletonList(displayResult));
-        displayResult.setFolow(Collections.singletonList(orGateway));
+        startEvent.setFollowers(Collections.singletonList(searchTrip));
+        searchTrip.setFollowers(Collections.singletonList(displayResult));
+        displayResult.setFollowers(Collections.singletonList(orGateway));
         List<CbpmElement> gatewayFollowers = new ArrayList<>();
         gatewayFollowers.add(chooseTrip);
         gatewayFollowers.add(startEvent);
-        orGateway.setFolow(gatewayFollowers);
-        chooseTrip.setFolow(Collections.singletonList(displayTrip));
-        displayTrip.setFolow(Collections.singletonList(endEvent));
+        orGateway.setFollowers(gatewayFollowers);
+        chooseTrip.setFollowers(Collections.singletonList(displayTrip));
+        displayTrip.setFollowers(Collections.singletonList(endEvent));
 
-        Cbpm cbpm = new Cbpm();
-        cbpm.setStartEvent(startEvent);
+        Cbpm cbpm = new Cbpm(startEvent);
 
         OWLOntology ontology = service.convertCBPMtoOWLOntology(cbpm);
         StringDocumentTarget target = new StringDocumentTarget();

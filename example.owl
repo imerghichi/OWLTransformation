@@ -42,19 +42,28 @@
     
 
 
-    <!-- ExampleOntology#event -->
+    <!-- ExampleOntologyevent -->
 
 
-    <owl:Class rdf:about="ExampleOntology#event">
+    <owl:Class rdf:about="ExampleOntologyevent">
         <rdfs:subClassOf rdf:resource="ExampleOntology#processElement"/>
     </owl:Class>
     
 
 
-    <!-- ExampleOntology#gateway -->
+    <!-- ExampleOntologygateway -->
 
 
-    <owl:Class rdf:about="ExampleOntology#gateway">
+    <owl:Class rdf:about="ExampleOntologygateway">
+        <rdfs:subClassOf rdf:resource="ExampleOntology#processElement"/>
+    </owl:Class>
+    
+
+
+    <!-- ExampleOntologyservice -->
+
+
+    <owl:Class rdf:about="ExampleOntologyservice">
         <rdfs:subClassOf rdf:resource="ExampleOntology#processElement"/>
     </owl:Class>
     
@@ -64,15 +73,6 @@
 
 
     <owl:Class rdf:about="ExampleOntology#processElement"/>
-    
-
-
-    <!-- ExampleOntology#service -->
-
-
-    <owl:Class rdf:about="ExampleOntology#service">
-        <rdfs:subClassOf rdf:resource="ExampleOntology#processElement"/>
-    </owl:Class>
     
 
 
