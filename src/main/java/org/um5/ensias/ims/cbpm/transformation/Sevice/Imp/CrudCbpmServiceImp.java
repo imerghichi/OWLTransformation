@@ -3,13 +3,14 @@ package org.um5.ensias.ims.cbpm.transformation.Sevice.Imp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.um5.ensias.ims.cbpm.transformation.Repository.CbpmRepository;
-import org.um5.ensias.ims.cbpm.transformation.Sevice.CrudService;
+import org.um5.ensias.ims.cbpm.transformation.Sevice.CrudCbpmService;
 import org.um5.ensias.ims.cbpm.transformation.model.Cbpm;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CrudServiceImp implements CrudService {
+public class CrudCbpmServiceImp implements CrudCbpmService {
 
     @Autowired
     CbpmRepository cbpmRepository;
@@ -20,8 +21,8 @@ public class CrudServiceImp implements CrudService {
     }
 
     @Override
-    public Cbpm findById(long id) {
-        return cbpmRepository.findById(id).orElse(null);
+    public Optional<Cbpm> findById(long id) {
+        return cbpmRepository.findById(id);
     }
 
     @Override

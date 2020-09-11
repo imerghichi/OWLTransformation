@@ -16,9 +16,8 @@ public abstract class CbpmElement  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	//I add it to get the IRI
 	private String nameElement;
 	@OneToMany
-	private List<CbpmElement> Folow;
+	private List<CbpmElement> followers;
 
 }

@@ -36,9 +36,9 @@ public class OntologyServiceImp implements OntologyService {
         addElementAsIndividualToClass(ontology,rootIndividual,root);
         OWLObjectProperty propFollow = Utils.createObjectProperty(baseIRI+"#follows");
         done.add(root);
-        if(root.getFolow()!=null){
+        if(root.getFollowers()!=null){
             for (CbpmElement element:
-                    root.getFolow()) {
+                    root.getFollowers()) {
                 if(!done.contains(element)){
                     Utils.addChange(Utils.addObjectproperty(ontology,getElementAsIndividual(element),propFollow,rootIndividual));
                     addAllIndividualsfromRoot(element,ontology);

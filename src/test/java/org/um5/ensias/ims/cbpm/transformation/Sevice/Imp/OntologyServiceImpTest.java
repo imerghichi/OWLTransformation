@@ -28,7 +28,7 @@ class OntologyServiceImpTest {
         service.setNameElement("service");
         List<CbpmElement> followers = new ArrayList<>();
         followers.add(service);
-        event.setFolow(followers);
+        event.setFollowers(followers);
         OWLOntology ontology1 = serviceImp.convertCBPMtoOWLOntology(cbpm);
         // 3 avec basic ontology + 1 pour follow
         assertEquals(ontology1.getAxiomCount(),4);
@@ -49,15 +49,15 @@ class OntologyServiceImpTest {
         service1.setNameElement("service");
         List<CbpmElement> followers1 = new ArrayList<>();
         followers1.add(service1);
-        event1.setFolow(followers1);
+        event1.setFollowers(followers1);
         Gateway gateway = new Gateway();
         gateway.setNameElement("gateway");
         List<CbpmElement> followers2 = new ArrayList<>();
         followers2.add(gateway);
-        service1.setFolow(followers2);
+        service1.setFollowers(followers2);
         List<CbpmElement> followers3 =new ArrayList<>();
         followers3.add(event1);
-        gateway.setFolow(followers3);
+        gateway.setFollowers(followers3);
         OWLOntology ontology = serviceImp1.convertCBPMtoOWLOntology(cbpm1);
         // 3 avec basic ontologormatiomy + 3 pour follow
         assertEquals(ontology.getAxiomCount(),6);
@@ -81,15 +81,15 @@ class OntologyServiceImpTest {
         Event endEvent = new Event();
         endEvent.setNameElement("EndEvent");
 
-        startEvent.setFolow(Collections.singletonList(searchTrip));
-        searchTrip.setFolow(Collections.singletonList(displayResult));
-        displayResult.setFolow(Collections.singletonList(orGateway));
+        startEvent.setFollowers(Collections.singletonList(searchTrip));
+        searchTrip.setFollowers(Collections.singletonList(displayResult));
+        displayResult.setFollowers(Collections.singletonList(orGateway));
         List<CbpmElement> gatewayFollowers = new ArrayList<>();
         gatewayFollowers.add(chooseTrip);
         gatewayFollowers.add(startEvent);
-        orGateway.setFolow(gatewayFollowers);
-        chooseTrip.setFolow(Collections.singletonList(displayTrip));
-        displayTrip.setFolow(Collections.singletonList(endEvent));
+        orGateway.setFollowers(gatewayFollowers);
+        chooseTrip.setFollowers(Collections.singletonList(displayTrip));
+        displayTrip.setFollowers(Collections.singletonList(endEvent));
 
         Cbpm cbpm = new Cbpm();
         cbpm.setStartEvent(startEvent);
