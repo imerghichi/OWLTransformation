@@ -10,14 +10,15 @@ import org.um5.ensias.ims.cbpm.transformation.Sevice.Imp.OntologyServiceImp;
 import org.um5.ensias.ims.cbpm.transformation.model.Cbpm;
 
 @RestController
-public class Contoller {
+public class OntologyController {
     @Autowired
     OntologyServiceImp service;
 
-    @GetMapping(value = "/cbpm/")
+    @GetMapping(value = "/ConvertCbpmToOWLOntology/")
     @ResponseBody
-    public OWLOntology getOntologyforCbpm(@RequestBody Cbpm cbpm) throws Exception {
+    public OWLOntology getOntologyForCbpm(@RequestBody Cbpm cbpm) throws Exception {
             return service.convertCBPMtoOWLOntology(cbpm);
     }
+
 
 }
